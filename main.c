@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #define MAX_DESCRIPTION_LENGTH 256
-#define INTIAL_CAPACITY 10
+#define INITIAL_CAPACITY 10
 
 typedef struct {
 	int id;
@@ -19,8 +19,33 @@ int todo_count = 0;
 int todo_capacity = 0;
 int next_id = 1;
 
+void initialize_todo_list() {
+	todo_capacity = INITIAL_CAPACITY;
+	todo_list = (TodoItem*)malloc(sizeof(TodoItem) * todo_capacity);
+	if (todo_list == NULL) {
+		printf("Error: failed to allocate memory!");
+		exit(EXIT_FAILURE);
+	}
+
+	todo_count = 0;
+	next_id = 1;
+}
+
+void free_todo_list() {
+	if (todo_list != NULL) {
+		free(todo_list);
+		todo_list = NULL;
+	}
+	
+	todo_count = 0;
+	todo_capacity = 0;
+	next_id = 1;
+}
+
 int main(void) {
 	int choice;
+
+	initialize_todo_list();
 
 	do {
 		printf("\n--- Todo List Application---\n");
@@ -33,7 +58,7 @@ int main(void) {
 		printf("Enter your choice\n");
 
 		if (scanf("%d", &choice) != 1) {
-			printf("Invalid input. Please enter a number");
+			printf("Invalid input. Please enter a number\n");
 			while (getchar() != '\n');
 			continue;
 		}
@@ -53,6 +78,8 @@ int main(void) {
 		
 
 	} while (choice != 6);
+
+	free_todo_list();
 
 	return 0;
 }
