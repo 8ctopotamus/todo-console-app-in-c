@@ -31,6 +31,27 @@ int main(void) {
 		printf("5. Save Todos\n");
 		printf("6 Exit\n");
 		printf("Enter your choice\n");
+
+		if (scanf("%d", &choice) != 1) {
+			printf("Invalid input. Please enter a number");
+			while (getchar() != '\n');
+			continue;
+		}
+
+		// consume left over newline character
+		while (getchar() != '\n');
+
+		switch(choice) {
+			case 1:
+				break;
+			case 6:
+				printf("Exiting appliction. Have a great day!\n");
+				break;
+			default:
+				printf("Invalid choice. Please try again.\n");
+		}
+		
+
 	} while (choice != 6);
 
 	return 0;
