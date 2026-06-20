@@ -42,10 +42,24 @@ void free_todo_list() {
 	next_id = 1;
 }
 
-int main(void) {
-	int choice;
+void add_todo(const char* description) {	
+	int len = strlen(description);
+	
+	printf("Saving '%s'. len: %d\n", description, len);
 
+
+	if (len == 0) {
+		printf("Error: description cannot be empty\n");
+		return;
+	}
+}
+
+int main(void) {
 	initialize_todo_list();
+
+	int choice;
+	char temp_description[MAX_DESCRIPTION_LENGTH];
+	int temp_id;
 
 	do {
 		printf("\n--- Todo List Application---\n");
@@ -68,6 +82,10 @@ int main(void) {
 
 		switch(choice) {
 			case 1:
+				printf("Enter the new todo description: ");
+				fgets(temp_description, sizeof(temp_description), stdin);
+				temp_description[strcspn(temp_description, "\n")] = 0; // remove the "\n" from user input
+				add_todo(temp_description);
 				break;
 			case 6:
 				printf("Exiting appliction. Have a great day!\n");
