@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #define MAX_DESCRIPTION_LENGTH 256
-#define INITIAL_CAPACITY 10
+#define INITIAL_CAPACITY 2
 
 typedef struct {
 	int id;
@@ -23,7 +23,7 @@ void initialize_todo_list() {
 	todo_capacity = INITIAL_CAPACITY;
 	todo_list = (TodoItem*)malloc(sizeof(TodoItem) * todo_capacity);
 	if (todo_list == NULL) {
-		printf("Error: failed to allocate memory!");
+		printf("Error: failed to allocate memory!\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -47,9 +47,11 @@ bool ensure_capacity() {
 		todo_capacity *= 2;
 		TodoItem* temp = (TodoItem*)realloc(todo_list, sizeof(TodoItem) * todo_capacity);
 		if (temp == NULL) {
-			printf("Error: failed to reallocate memory!");
+			printf("Error: failed to reallocate memory!\n");
 			return false;
 		}
+		todo_list = temp;
+		printf("Info: resized todo list to capacity of %d.\n", todo_capacity);
 	} 
 	return true;
 }
