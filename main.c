@@ -42,15 +42,40 @@ void free_todo_list() {
 	next_id = 1;
 }
 
+bool ensure_capacity() {
+	if (todo_count >= todo_capacity) {
+		todo_capacity *= 2;
+		TodoItem* temp = (TodoItem*)realloc(todo_list, sizeof(TodoItem) * todo_capacity);
+		if (temp == NULL) {
+			printf("Error: failed to reallocate memory!");
+			return false;
+		}
+	} 
+	return true;
+}
+
 void add_todo(const char* description) {	
-	int len = strlen(description);
-	
-	printf("Saving '%s'. len: %d\n", description, len);
-
-
-	if (len == 0) {
+	if (strlen(description) == 0) {
 		printf("Error: description cannot be empty\n");
 		return;
+	}
+
+  bool has_enough_space =	ensure_capacity();
+	if (!has_enough_space) return;
+
+	todo_list[todo_count].id = next_id++;
+	strcpy(todo_list[todo_count].description, description);
+	todo_list[todo_count].completed = false;
+	todo_count++;
+	
+	printf("Success: TodoItem added: ID %d - \"%s\"\n", todo_list[todo_count - 1].id, todo_list[todo_count - 1].description);
+}
+
+void list_todos() {
+	printf("\nYour TODOs:\n");
+	for (int i = 0; i < todo_count; i++) {
+		TodoItem todo = todo_list[i];
+		printf("%d: %s - %s\n", todo.id, todo.description, todo.completed ? "completed" : "incomplete");
 	}
 }
 
@@ -86,6 +111,9 @@ int main(void) {
 				fgets(temp_description, sizeof(temp_description), stdin);
 				temp_description[strcspn(temp_description, "\n")] = 0; // remove the "\n" from user input
 				add_todo(temp_description);
+				break;
+			case 2:
+				list_todos();
 				break;
 			case 6:
 				printf("Exiting appliction. Have a great day!\n");
