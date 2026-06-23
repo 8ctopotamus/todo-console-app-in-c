@@ -74,11 +74,20 @@ void add_todo(const char* description) {
 }
 
 void list_todos() {
-	printf("\nYour TODOs:\n");
+	if (todo_count == 0) {
+		printf("The TODO list os empty");
+		return;
+	}
+	printf("\n--- Your TODO%s (%d) ---\n", todo_count == 1 ? "" : "s", todo_count);
 	for (int i = 0; i < todo_count; i++) {
 		TodoItem todo = todo_list[i];
-		printf("%d: %s - %s\n", todo.id, todo.description, todo.completed ? "completed" : "incomplete");
+		printf("ID: %-4d | Status: %-8s | Description:  %s\n", 
+			todo.id, 
+			todo.completed ? "COMPLETE" : "PENDING", 
+			todo.description
+		);
 	}
+	printf("-------------------------------------\n");
 }
 
 int main(void) {
