@@ -90,6 +90,17 @@ void list_todos() {
 	printf("-------------------------------------\n");
 }
 
+void toggle_completed(int *temp_id) {
+	if (todo_count == 0 || *temp_id == 0) return;
+	printf("Toggling TODO... %d\n", *temp_id);
+	for (int i = 0; i < todo_count; i++) {
+		if (todo_list[i].id == *temp_id) {
+			todo_list[i].completed = !todo_list[i].completed;
+		}
+	}
+	*temp_id = 0;
+}
+
 int main(void) {
 	initialize_todo_list();
 
@@ -125,6 +136,15 @@ int main(void) {
 				break;
 			case 2:
 				list_todos();
+				break;
+			case 3:
+				printf("Toggle TODO completed:\n");
+				list_todos();
+				printf("Enter ID: ");
+				scanf("%d", &temp_id);
+				toggle_completed(&temp_id);
+				list_todos();
+				printf("Temp ID after toggle: %d \n", temp_id);
 				break;
 			case 6:
 				printf("Exiting appliction. Have a great day!\n");
